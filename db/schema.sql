@@ -1,9 +1,9 @@
-DROP DATABASE IF EXISTS employees_db;
-CREATE DATABASE employees_db;
+DROP DATABASE IF EXISTS employee_db;
+CREATE DATABASE employee_db;
 
-USE employees_db;
+USE employee_db;
 
-CREATE TABLE departments (
+CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(30) NOT NULL
 );
@@ -12,14 +12,14 @@ CREATE TABLE roles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
   salary DECIMAL NOT NULL,
-  departments_id INT,
-  FOREIGN KEY (departments_id)
-  REFERENCES departments(id)
+  department_id INT,
+  FOREIGN KEY (department_id)
+  REFERENCES department(id)
   ON DELETE
   SET NULL
 );
 
-CREATE TABLE employees (
+CREATE TABLE employee (
   id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
@@ -30,24 +30,24 @@ CREATE TABLE employees (
   ON DELETE
   SET NULL,
   FOREIGN KEY (manager_id)
-  REFERENCES employees(id)
+  REFERENCES employee(id)
   ON DELETE
   SET NULL
 );
 
-INSERT INTO departments (name)
+INSERT INTO department (name)
 VALUES ("Managment"),
        ("Sales"),
        ("Engineering");
 
-INSERT INTO roles (title, salary, departments_id)
+INSERT INTO roles (title, salary, department_id)
 VALUES ("President", 100000.00, 1),
        ("VP", 80000.00, 1),
        ("Sales", 60000.00, 2),
        ("Managment", 50000.00, 1),
        ("Engineer", 40000.00, 3);
 
-INSERT INTO employees (first_name, last_name, roles_id, manager_id)
+INSERT INTO employee (first_name, last_name, roles_id, manager_id)
 VALUES ("John", "Smith President", 1, 1),
       ("Jane", "Smith VP Sales", 2, 1),
       ("Michael", "Fritz Sales Manager", 3, 2),
@@ -56,5 +56,3 @@ VALUES ("John", "Smith President", 1, 1),
       ("Eddy", "Eagle Engineer", 4, 4);
 
 
-SELECT *
-FROM employees
