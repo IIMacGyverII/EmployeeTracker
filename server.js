@@ -36,19 +36,26 @@ async function awaitMySqlWithInquirer(){
     ])
   .then(function (responses) {
     if (responses.firstChoice === "View all departments") {
+        console.log(" ==============================")
+        console.log("|           Departments        |")
+        console.log(" ==============================")
         console.table(departments)
-        console.log("departments")
         return awaitMySqlWithInquirer()
         
     }
     else if (responses.firstChoice === "View all roles") {
+      console.log(" =======================================================")
+      console.log("|                         Roles                         |")
+      console.log(" =======================================================")
       console.table(roles);
-      console.log("departments")
       return awaitMySqlWithInquirer()
     }
     else if (responses.firstChoice === "View all employees") {
+      console.log(" ================================================================================")
+      console.log("|                                    Employees                                   |")
+      console.log(" ================================================================================")
       console.table(employees);
-      awaitMySqlWithInquirer()
+      return awaitMySqlWithInquirer()
     }
     else {
         console.log("4");
