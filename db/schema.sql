@@ -5,7 +5,7 @@ USE employee_db;
 
 CREATE TABLE departments (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  department_name VARCHAR(30) NOT NULL
+  name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE roles (
@@ -20,13 +20,15 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE employees (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
-  roles_id INT NOT NULL,
+  roles_id INT,
   manager_id INT,
   FOREIGN KEY (roles_id)
-  REFERENCES roles(id),
+  REFERENCES roles(id)
+  ON DELETE
+  SET NULL,
   FOREIGN KEY (manager_id)
   REFERENCES employees(id)
   ON DELETE
@@ -36,20 +38,26 @@ CREATE TABLE employees (
 
 
 
-INSERT INTO movies (id, movie_name)
-VALUES (1, "The Fifth Element"),
-       (2, "Saving Private Ryan"),
-       (3, "The Count of Monte Cristo"),
-       (4, "Dr. Stranglove"),
-       (5, "Leathal Weapon");
+INSERT INTO departments (name)
+VALUES ("Managment"),
+       ("Sales"),
+       ("Engineering");
 
-INSERT INTO reviews (movie_id, review)
-VALUES (1, "Awesome"),
-       (2, "Sweet"),
-       (3, "Cool"),
-       (4, "Amazing"),
-       (5, "Narly");
+INSERT INTO roles (title, salary, departments_id)
+VALUES ("President", 100000.00, 1),
+       ("VP", 80000.00, 1),
+       ("Sales", 60000.00, 2),
+       ("Managment", 50000.00, 1),
+       ("Engineer", 40000.00, 3);
+
+INSERT INTO employees (first_name, last_name, roles_id, manager_id)
+VALUES ("John", "Smith President", 1, 1),
+      ("Jane", "Smith VP Sales", 2, 1),
+      ("Michael", "Fritz Sales Manager", 3, 2),
+      ("Melissa", "Doug Sales", 3, 3),
+      ("Mark", "Kana Head of Engineering", 3, 1),
+      ("Eddy", "Eagle Engineer", 4, 4);
+
 
 SELECT *
-FROM movies
-JOIN reviews ON movies.id = reviews.movies;
+FROM employees
