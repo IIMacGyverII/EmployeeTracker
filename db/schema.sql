@@ -35,9 +35,6 @@ CREATE TABLE employees (
   SET NULL
 );
 
-
-
-
 INSERT INTO departments (name)
 VALUES ("Managment"),
        ("Sales"),
