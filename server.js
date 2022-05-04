@@ -92,11 +92,6 @@ function addARole() {
 }
 
 async function addAEmployee() {
-  console.log("add a employee test")
-  return mainMenuWithInquirer()
-}
-
-async function updateAEmployeeRole() {
   await init()
 
     const [employees] =  await db.execute("select * from employee")
@@ -105,19 +100,32 @@ async function updateAEmployeeRole() {
     console.table(employees);
     
        const response = await prompt([{
-                type: 'list',
-                name: 'employee',
-                message: 'Which employees role would you like to update?',
-                choices: employees.map(employee=> ({name:employee.first_name + " "+ employee.last_name, value: employee}))
+                type: 'input',
+                name: 'firstName',
+                message: 'What is the employees first name?',
+                // choices: employees.map(employee=> ({name:employee.first_name + " "+ employee.last_name, value: employee}))
+              },
+              {
+                type: 'input',
+                name: 'lastName',
+                message: 'What is the employees last name?',
+                // choices: employees.map(employee=> ({name:employee.first_name + " "+ employee.last_name, value: employee}))
               },
               {
                 type: 'list',
-                message: 'Choose Role',
+                message: 'Choose the employees Role',
                 name: 'chooseRole',
                 choices: roles.map(role=> ({name:role.id + ": "+ role.title, value: role}))
                 },
+                {
+                  type: 'list',
+                  message: 'Choose the employees manager',
+                  name: 'chooseManager',
+                  choices: employees.map(employee=> ({name:employee.first_name + " "+ employee.last_name, value: employee}))
+                  },
               ])
-              db.execute( `UPDATE employee SET roles_id =${response.chooseRole.id} WHERE id = ${response.employee.id}`)
+              db.execute(`INSERT INTO employee (first_name, last_name, roles_id, manager_id)
+                        VALUES ("${response.firstName}", "${response.lastName}", ${response.chooseRole.id}, ${response.chooseManager.id});`)
               console.log(response)
 
               
@@ -128,6 +136,40 @@ async function updateAEmployeeRole() {
   console.log("update a employee role test")
   // return mainMenuWithInquirer()
 }
+
+
+async function updateAEmployeeRole() {
+  await init()
+
+    const [employees] =  await db.execute("select * from employee")
+    const [roles] =  await db.execute("select * from roles")
+
+    console.table(employees);
+    
+        const response = await prompt([{
+          type: 'list',
+          name: 'employee',
+          message: 'Which employees role would you like to update?',
+          choices: employees.map(employee=> ({name:employee.first_name + " "+ employee.last_name, value: employee}))
+        },
+        {
+          type: 'list',
+          message: 'What would you like their new role to be?',
+          name: 'chooseRole',
+          choices: roles.map(role=> ({name:role.id + ": "+ role.title, value: role}))
+          },
+        ])
+        db.execute( `UPDATE employee SET roles_id =${response.chooseRole.id} WHERE id = ${response.employee.id}`)
+        console.table(employees)
+        console.log(" ================================================="),
+        console.log("\x1b[31m%s\x1b[0m",`| Employee ${response.employee.first_name} ${response.employee.last_name}s role has been changed to ${response.chooseRole.id} |`),
+        console.log(" ================================================="),
+        await mainMenuWithInquirer();
+    }
+
+  console.log("update a employee role test")
+  // return mainMenuWithInquirer()
+
 
 
 async function awaitWithInquirerByItself(){
