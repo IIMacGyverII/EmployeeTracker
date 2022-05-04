@@ -184,7 +184,7 @@ async function updateAEmployeeRole() {
           db.execute( `UPDATE employee SET roles_id =${response.chooseRole.id} WHERE id = ${response.employee.id}`)
           console.table(employees)
           console.log(" ================================================="),
-          console.log("\x1b[36m%s\x1b[0m",`| Employee ${response.employee.first_name} ${response.employee.last_name}s role has been changed to ${response.chooseRole.id} |`),
+          console.log("\x1b[36m%s\x1b[0m",`| Employee ${response.employee.first_name} ${response.employee.last_name}s role has been changed to ${response.chooseRole.title}(${response.chooseRole.id}) |`),
           console.log(" ================================================="),
   viewEmployees()
 }

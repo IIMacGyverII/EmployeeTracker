@@ -48,11 +48,11 @@ VALUES ("President", 100000.00, 1),
        ("Engineer", 40000.00, 3);
 
 INSERT INTO employee (first_name, last_name, roles_id, manager_id)
-VALUES ("John", "Smith President", 1, 1),
-      ("Jane", "Smith VP Sales", 2, 1),
-      ("Michael", "Fritz Sales Manager", 3, 2),
-      ("Melissa", "Doug Sales", 3, 3),
-      ("Mark", "Kana Head of Engineering", 3, 1),
-      ("Eddy", "Eagle Engineer", 4, 4);
+VALUES ("John", "Smith", 1, 1),
+      ("Jane", "Smith", 2, 1),
+      ("Michael", "Fritz", 3, 2),
+      ("Melissa", "Doug", 3, 3),
+      ("Mark", "Kana", 3, 1),
+      ("Eddy", "Eagle", 4, 4);
 
 
