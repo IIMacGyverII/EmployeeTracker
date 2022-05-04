@@ -79,7 +79,7 @@ async function addADepartment() {
         db.execute(`INSERT INTO department (name)
                   VALUES ("${response.departmentTitle}");`)
         console.log(" ================================================="),
-        console.log("\x1b[31m%s\x1b[0m",`| New department ${response.departmentTitle} has been added! |`),
+        console.log("\x1b[36m%s\x1b[0m",`| New department ${response.departmentTitle} has been added! |`),
         console.log(" ================================================="),
   viewDepartments()
 }
@@ -113,7 +113,7 @@ async function addARole() {
         db.execute(`INSERT INTO roles (title, salary, department_id)
                   VALUES ("${response.roleTitle}", "${response.salary}", ${response.chooseDepartment.id});`)
         console.log(" ==============================================================================================="),
-        console.log("\x1b[31m%s\x1b[0m",`| New role (${response.roleTitle}) with a salary of $${response.salary} belonging to the ${response.chooseDepartment.name}(${response.chooseDepartment.id}) department has been added! |`),
+        console.log("\x1b[36m%s\x1b[0m",`| New role (${response.roleTitle}) with a salary of $${response.salary} belonging to the ${response.chooseDepartment.name}(${response.chooseDepartment.id}) department has been added! |`),
         console.log(" ==============================================================================================="),
   viewRoles()
 }
@@ -152,9 +152,9 @@ async function addAEmployee() {
         ])
         db.execute(`INSERT INTO employee (first_name, last_name, roles_id, manager_id)
                     VALUES ("${response.firstName}", "${response.lastName}", ${response.chooseRole.id}, ${response.chooseManager.id});`)
-        console.log(" ================================================="),
-        console.log("\x1b[31m%s\x1b[0m",`| Employee ${response.firstName} ${response.lastName} with a role of ${response.chooseRole.id} has been added! |`),
-        console.log(" ================================================="),
+        console.log(" ==============================================================================================="),
+        console.log("\x1b[36m%s\x1b[0m",`| Employee ${response.firstName} ${response.lastName} with a role of ${response.chooseRole.title}(${response.chooseRole.id}) under manager ${response.chooseManager.first_name} ${response.chooseManager.last_name} has been added! |`),
+        console.log(" ==============================================================================================="),
   viewEmployees();
 }
 
@@ -184,7 +184,7 @@ async function updateAEmployeeRole() {
           db.execute( `UPDATE employee SET roles_id =${response.chooseRole.id} WHERE id = ${response.employee.id}`)
           console.table(employees)
           console.log(" ================================================="),
-          console.log("\x1b[31m%s\x1b[0m",`| Employee ${response.employee.first_name} ${response.employee.last_name}s role has been changed to ${response.chooseRole.id} |`),
+          console.log("\x1b[36m%s\x1b[0m",`| Employee ${response.employee.first_name} ${response.employee.last_name}s role has been changed to ${response.chooseRole.id} |`),
           console.log(" ================================================="),
   viewEmployees()
 }
