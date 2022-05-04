@@ -81,14 +81,58 @@ async function mainMenuWithInquirer(){
     }
     })
     
-function addADepartment() {
-  console.log("add a department test")
-  return mainMenuWithInquirer()
+async function addADepartment() {
+  await init()
+
+    const [departments] =  await db.execute("select * from department")
+
+    console.table(departments);
+    
+       const response = await prompt([{
+                type: 'input',
+                name: 'departmentTitle',
+                message: 'What is the new department?',
+              },
+              ])
+              db.execute(`INSERT INTO department (name)
+                        VALUES ("${response.departmentTitle}");`)
+              console.log(" ================================================="),
+              console.log("\x1b[31m%s\x1b[0m",`| New department ${response.departmentTitle} has been added! |`),
+              console.log(" ================================================="),
+              await mainMenuWithInquirer();
 }
 
-function addARole() {
-  console.log("add a role test")
-  return mainMenuWithInquirer()
+async function addARole() {
+  await init()
+
+    const [roles] =  await db.execute("select * from roles")
+    const [departments] =  await db.execute("select * from department")
+
+    console.table(roles);
+    
+       const response = await prompt([{
+                type: 'input',
+                name: 'roleTitle',
+                message: 'What is the new role?',
+              },
+              {
+                type: 'input',
+                name: 'salary',
+                message: 'What is the salary for the new role?',
+              },
+              {
+                type: 'list',
+                message: 'To what department does it belong to?',
+                name: 'chooseDepartment',
+                choices: departments.map(department=> ({name:department.name, value: department}))
+                },
+              ])
+              db.execute(`INSERT INTO roles (title, salary, department_id)
+                        VALUES ("${response.roleTitle}", "${response.salary}", ${response.chooseDepartment.id});`)
+              console.log(" ================================================="),
+              console.log("\x1b[31m%s\x1b[0m",`| New role ${response.roleTitle} with a salary of $${response.salary} belonging to department ${response.chooseDepartment.id} has been added! |`),
+              console.log(" ================================================="),
+              await mainMenuWithInquirer();
 }
 
 async function addAEmployee() {
@@ -126,15 +170,11 @@ async function addAEmployee() {
               ])
               db.execute(`INSERT INTO employee (first_name, last_name, roles_id, manager_id)
                         VALUES ("${response.firstName}", "${response.lastName}", ${response.chooseRole.id}, ${response.chooseManager.id});`)
-              console.log(response)
-
-              
-                /// write next sql statements here! you would do some sort of sql query after this
-              
-    }
-
-  console.log("update a employee role test")
-  // return mainMenuWithInquirer()
+              // console.table(employees)
+              console.log(" ================================================="),
+              console.log("\x1b[31m%s\x1b[0m",`| Employee ${response.firstName} ${response.lastName} with a role of ${response.chooseRole.id} has been added! |`),
+              console.log(" ================================================="),
+              await mainMenuWithInquirer();
 }
 
 
@@ -167,27 +207,22 @@ async function updateAEmployeeRole() {
         await mainMenuWithInquirer();
     }
 
-  console.log("update a employee role test")
   // return mainMenuWithInquirer()
 
 
 
-async function awaitWithInquirerByItself(){
+// async function awaitWithInquirerByItself(){
  
     
-       const {size} = await prompt([{
-                type: 'list',
-                name: 'size',
-                message: 'What size do you need?',
-                choices: ['Jumbo', 'Large', 'Standard', 'Medium', 'Small', 'Micro']
-              }])
+//        const {size} = await prompt([{
+//                 type: 'list',
+//                 name: 'size',
+//                 message: 'What size do you need?',
+//                 choices: ['Jumbo', 'Large', 'Standard', 'Medium', 'Small', 'Micro']
+//               }])
         
-          console.log(size);
+//           console.log(size);
         
-    }
+//     }
 
-
-
-
-
-
+}
