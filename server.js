@@ -43,26 +43,14 @@ async function mainMenuWithInquirer(){
     ])
   .then(function (responses) {
     if (responses.firstChoice === "View All Departments") {
-        console.log(" ==============================")
-        console.log("|           Departments        |")
-        console.log(" ==============================")
-        console.table(departments);
-        return mainMenuWithInquirer()
+        return viewDepartments()
         
     }
     else if (responses.firstChoice === "View All Roles") {
-      console.log(" =======================================================")
-      console.log("|                         Roles                         |")
-      console.log(" =======================================================")
-      console.table(roles);
-      return mainMenuWithInquirer()
+      return viewRoles()
     }
     else if (responses.firstChoice === "View All Employees") {
-      console.log(" ================================================================================")
-      console.log("|                                    Employees                                   |")
-      console.log(" ================================================================================")
-      console.table(employees);
-      return mainMenuWithInquirer()
+      return viewEmployees()
     }
     else if (responses.firstChoice === "Add A Department") {
       addADepartment() 
@@ -99,7 +87,7 @@ async function addADepartment() {
               console.log(" ================================================="),
               console.log("\x1b[31m%s\x1b[0m",`| New department ${response.departmentTitle} has been added! |`),
               console.log(" ================================================="),
-              await mainMenuWithInquirer();
+  viewDepartments()
 }
 
 async function addARole() {
@@ -129,10 +117,11 @@ async function addARole() {
               ])
               db.execute(`INSERT INTO roles (title, salary, department_id)
                         VALUES ("${response.roleTitle}", "${response.salary}", ${response.chooseDepartment.id});`)
-              console.log(" ================================================="),
+              console.log(" =============================================================================="),
               console.log("\x1b[31m%s\x1b[0m",`| New role ${response.roleTitle} with a salary of $${response.salary} belonging to department ${response.chooseDepartment.id} has been added! |`),
-              console.log(" ================================================="),
-              await mainMenuWithInquirer();
+              console.log(" =============================================================================="),
+  viewRoles()
+              
 }
 
 async function addAEmployee() {
@@ -174,7 +163,7 @@ async function addAEmployee() {
               console.log(" ================================================="),
               console.log("\x1b[31m%s\x1b[0m",`| Employee ${response.firstName} ${response.lastName} with a role of ${response.chooseRole.id} has been added! |`),
               console.log(" ================================================="),
-              await mainMenuWithInquirer();
+  viewEmployees();
 }
 
 
@@ -206,6 +195,39 @@ async function updateAEmployeeRole() {
         console.log(" ================================================="),
         await mainMenuWithInquirer();
     }
+
+async function viewRoles() {
+  const [roles] =  await db.execute("select * from roles")
+      console.log(" =======================================================")
+      console.log("|                         Roles                         |")
+      console.log(" =======================================================")
+  console.table(roles)
+  return mainMenuWithInquirer()
+}
+
+async function viewDepartments() {
+  const [departments] =  await db.execute("select * from department")
+  console.log(" ==============================")
+  console.log("|           Departments        |")
+  console.log(" ==============================")
+  console.table(departments)
+  return mainMenuWithInquirer()
+}
+
+async function viewEmployees() {
+  const [employees] =  await db.execute("select * from employee")
+  console.log(" ================================================================")
+  console.log("|                            Employees                           |")
+  console.log(" ================================================================")
+  console.table(employees);
+  return mainMenuWithInquirer()
+}
+
+
+
+
+
+
 
   // return mainMenuWithInquirer()
 
